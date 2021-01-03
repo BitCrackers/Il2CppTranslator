@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Il2CppTranslator": {
+      "commandName": "Project"
+    },
+    "Build": {
+      "commandName": "Project"
+    }
+  }
+}

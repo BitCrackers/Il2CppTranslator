@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Il2CppTranslator", "Il2CppTranslator.csproj", "{39C974CB-E58E-48E2-A139-FC7ADDA7F166}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39C974CB-E58E-48E2-A139-FC7ADDA7F166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39C974CB-E58E-48E2-A139-FC7ADDA7F166}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39C974CB-E58E-48E2-A139-FC7ADDA7F166}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39C974CB-E58E-48E2-A139-FC7ADDA7F166}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C2F63DD3-3994-4F4F-9722-FCDDD2323403}
+	EndGlobalSection
+EndGlobal
