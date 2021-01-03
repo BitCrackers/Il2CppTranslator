@@ -22,9 +22,9 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Checkout
-        uses: actions/checkout @v2
+        uses: actions/checkout@v2
       - name: Setup.NET Core
-        uses: actions/setup-dotnet @v1
+        uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.100
       - name: Restore
@@ -38,7 +38,7 @@ jobs:
         run: dotnet pack -v normal -c Release --no-restore --include-symbols --include-source -p:PackageVersion=$GITHUB_RUN_ID src/$PROJECT_NAME/$PROJECT_NAME.* proj
       - name: Upload Artifact
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact @v2
+        uses: actions/upload-artifact@v2
         with:
           name: nupkg
           path: ./src/${{ env.PROJECT_NAME }}/bin/Release/*.nupkg
