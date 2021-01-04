@@ -31,7 +31,7 @@ Go to the plugin settings and select **"Il2CppTranslator Classes"** from the exp
 To use Il2CppTranslator you can install the latest nuget package from https://github.com/OsOmE1/Il2CppTranslator/packages/
 
 # Build Instructions
-Clone [Il2CppInspector](https://github.com/djkaty/Il2CppInspector) and [Il2CppTranslator](https://github.com/OsOmE1/Il2CppTranslator) into the same directory.
-`$ git clone --recursive https://github.com/djkaty/Il2CppInspector.git` 
-`$ git clone https://github.com/OsOmE1/Il2CppTranslator.git` 
+Clone [Il2CppInspector](https://github.com/djkaty/Il2CppInspector) and [Il2CppTranslator](https://github.com/OsOmE1/Il2CppTranslator) into the same directory.  
+`$ git clone --recursive https://github.com/djkaty/Il2CppInspector.git`  
+`$ git clone https://github.com/OsOmE1/Il2CppTranslator.git`  
 Then build Il2CppInspector in debug mode and then build Il2CppTranslator
