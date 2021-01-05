@@ -35,3 +35,6 @@ Clone [Il2CppInspector](https://github.com/djkaty/Il2CppInspector) and [Il2CppTr
 `$ git clone --recursive https://github.com/djkaty/Il2CppInspector.git`  
 `$ git clone https://github.com/OsOmE1/Il2CppTranslator.git`  
 Then build Il2CppInspector in debug mode and then build Il2CppTranslator
+
+# Documentation
+The documentation can be found here https://github.com/OsOmE1/Il2CppTranslator/wiki
