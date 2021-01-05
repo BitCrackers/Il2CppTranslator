@@ -1,4 +1,4 @@
-# Il2CppTranslator [![](https://img.shields.io/github/v/release/OsOmE1/Il2CppTranslator)](https://github.com/dankgrinder/dankgrinder/releases/latest)
+# Il2CppTranslator [![](https://img.shields.io/github/v/release/OsOmE1/Il2CppTranslator)](https://github.com/OsOmE1/Il2CppTranslator/releases/latest)
 A C# Library to help make deobfuscation plugins for [Il2CppInspector](https://github.com/djkaty/Il2CppInspector)
 
 # Examples
