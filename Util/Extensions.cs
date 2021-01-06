@@ -12,26 +12,16 @@ namespace Il2CppTranslator.Util
         {
             private readonly IEnumerator<T> enumerator;
 
-            public DummyEnumerable(IEnumerator<T> enumerator)
-            {
-                this.enumerator = enumerator;
-            }
+            public DummyEnumerable(IEnumerator<T> enumerator) => this.enumerator = enumerator;
 
-            public IEnumerator<T> GetEnumerator()
-            {
-                return enumerator;
-            }
+            public IEnumerator<T> GetEnumerator() => enumerator;
 
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return enumerator;
-            }
+            IEnumerator IEnumerable.GetEnumerator() => enumerator;
         }
 
         public static IEnumerable<TItem> TopologicalSort<TItem, TKey>(this IEnumerable<TItem> source, Func<TItem, TKey> getKey, Func<TItem, IEnumerable<TKey>> getDependencies)
         {
-            var enumerator = new TopologicalSorting<TItem, TKey>(source, getKey, getDependencies);
-            return new DummyEnumerable<TItem>(enumerator);
+            return new DummyEnumerable<TItem>(new TopologicalSorting<TItem, TKey>(source, getKey, getDependencies));
         }
 
         public static IList<FieldInfo> GetFields(this TypeInfo typeInfo)
@@ -39,16 +29,15 @@ namespace Il2CppTranslator.Util
             return typeInfo.DeclaredFields.Where(f => !f.IsLiteral && !f.IsStatic).ToList();
         }
 
-        public static bool FieldSequenceEqual(this TypeInfo typeInfo, IEnumerable<string> baseNames)
+        public static bool FieldSequenceEqual(this TypeInfo typeInfo, List<string> fieldSequence)
         {
-            var fieldBaseNames = typeInfo.GetFields().Select(f => f.FieldType.CSharpName).ToList();
-            var baseNamesList = baseNames.ToList();
-            if (fieldBaseNames.Count != baseNamesList.Count) return false;
+            var typeNames = typeInfo.GetFields().Select(f => new { f.FieldType.CSharpName, f.FieldType.CSharpBaseName }).ToList();
+            if (fieldSequence.Count != typeNames.Count) return false;
 
-            for (int i = 0; i < fieldBaseNames.Count; i++)
+            for (int i = 0; i < fieldSequence.Count; i++)
             {
-                if (baseNamesList[i] == "*") continue;
-                if (fieldBaseNames[i] != baseNamesList[i]) return false;
+                if (fieldSequence[i] == "*") continue;
+                if (typeNames[i].CSharpName != fieldSequence[i] && typeNames[i].CSharpBaseName != fieldSequence[i]) return false;
             }
 
             return true;
