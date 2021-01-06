@@ -5,21 +5,27 @@ A C# Library to help make deobfuscation plugins for [Il2CppInspector](https://gi
 A translator class must always have the translator attribute and implement the ITranslator interface.
 More information on how to structure your plugin can be found here https://github.com/OsOmE1/Il2CppTranslator/wiki/Structuring-your-plugin  
 ```CS
-[Translator("YourClass")]
 class YourClass : ITranslator
 {
-    public TypeTranslator Translator => Locate();
+    public string Name = "YourClass"
+    public List<System.Type> Dependencies = new List<System.Type>();
 
-    public TypeTranslator Locate()
+    TypeTranslator _type;
+    
+    public void Initialize()
     {
-        return new TypeTranslator(Helpers.GetField("YouField").DeclaringType);
+        _type = new TypeTranslator(Helpers.GetField("YourField").DeclaringType);
     }
 
-    public void Translate()
+    public void TranslateFields()
     {
-        Translator.AddField(field_offset: 0x0, static_field: false, field_name: "YourField");
+        _type.AddField(new FieldTranslator() {{ Offset = 0x0, Static = true, Name = "CleanName", TranslateName = true);
         Translator.TranslateFields();
     }
+    
+    void TranslateMethods() { }
+
+    void TranslateDerivedTypes() { }
 }
 ```
 
