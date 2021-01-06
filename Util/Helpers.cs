@@ -40,11 +40,15 @@ namespace Il2CppTranslator.Util
             return GetTypes().Where(t => t.GetStaticFields().Count == count).ToList();
         }
 
-        public static TypeInfo FindTypeWithSequence(List<string> sequence)
+        public static TypeInfo FindTypeWithFieldSequence(List<string> sequence)
         {
             CheckInit(); return _types.Where(t => t.FieldSequenceEqual(sequence)).FirstOrDefault();
         }
 
+        public static TypeInfo FindTypeWithStaticFieldSequence(List<string> sequence)
+        {
+            CheckInit(); return _types.Where(t => t.StaticFieldSequenceEqual(sequence)).FirstOrDefault();
+        }
         internal static IList<TypeInfo> GetTypes()
         {
             CheckInit(); return _types;

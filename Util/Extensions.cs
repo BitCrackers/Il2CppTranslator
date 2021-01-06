@@ -42,7 +42,19 @@ namespace Il2CppTranslator.Util
 
             return true;
         }
+        public static bool StaticFieldSequenceEqual(this TypeInfo typeInfo, List<string> fieldSequence)
+        {
+            var typeNames = typeInfo.GetStaticFields().Select(f => new { f.FieldType.CSharpName, f.FieldType.CSharpBaseName }).ToList();
+            if (fieldSequence.Count != typeNames.Count) return false;
 
+            for (int i = 0; i < fieldSequence.Count; i++)
+            {
+                if (fieldSequence[i] == "*") continue;
+                if (typeNames[i].CSharpName != fieldSequence[i] && typeNames[i].CSharpBaseName != fieldSequence[i]) return false;
+            }
+
+            return true;
+        }
         public static IList<FieldInfo> GetStaticFields(this TypeInfo typeInfo)
         {
             return typeInfo.DeclaredFields.Where(f => !f.IsLiteral && f.IsStatic).ToList();
