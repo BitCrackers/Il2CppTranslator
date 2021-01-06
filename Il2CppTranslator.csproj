@@ -8,10 +8,16 @@
     <Company>GitHub</Company>
     <PackageDescription>Package to help build plugins for Il2CppInspector</PackageDescription>
     <RepositoryUrl>https://github.com/OsOmE1/Il2CppTranslator</RepositoryUrl>
+    <RootNamespace>Il2CppTranslator</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="NuGet.config" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Il2CppInspector.Common">
-      <HintPath>..\Il2CppInspector\Il2CppInspector.Common\bin\Debug\netcoreapp3.1\Il2CppInspector.Common.dll</HintPath>
+      <HintPath>$(Il2CppInspector)\Il2CppInspector.Common\bin\Debug\netcoreapp3.1\Il2CppInspector.Common.dll</HintPath>
     </Reference>
   </ItemGroup>
 
