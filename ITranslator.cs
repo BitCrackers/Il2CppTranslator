@@ -5,9 +5,11 @@ namespace Il2CppTranslator
     public interface ITranslator
     {
         public string Name { get; }
+        public TypeTranslator Type { get; }
         public List<System.Type> Dependencies { get; }
-
-        public void Initialize();
+        
+        Translator Parent { get; }
+        public void Initialize(Translator parent);
 
         void TranslateFields() { }
 

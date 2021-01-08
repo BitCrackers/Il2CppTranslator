@@ -7,10 +7,16 @@ namespace Il2CppTranslator
     {
         private List<FieldTranslator> _fields;
         private TypeInfo _type;
+        private string ObfName;
+        private string ObfNameSpace;
 
-        public TypeTranslator(TypeInfo type)
+        public TypeTranslator(TypeInfo type, Translator translator)
         {
+            translator.AddTranslator(this);
             _type = type;
+            ObfName = _type.Name;
+            ObfNameSpace = _type.Namespace;
+
             _fields = new List<FieldTranslator>();
         }
 
@@ -37,5 +43,10 @@ namespace Il2CppTranslator
             if (_type == null) return;
             _type.Namespace = type_namespace;
         }
+
+        internal List<FieldTranslator> GetFields() => _fields;
+        internal KeyValuePair<string, string> GetNameTranslation() => new KeyValuePair<string, string>(_type.Name, ObfName);
+        internal KeyValuePair<string, string> GetNameSpaceTranslation() => new KeyValuePair<string, string>(_type.Namespace, ObfNameSpace);
+
     }
 }

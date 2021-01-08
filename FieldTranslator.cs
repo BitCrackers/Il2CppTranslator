@@ -1,4 +1,5 @@
 ﻿using Il2CppInspector.Reflection;
+using System.Collections.Generic;
 
 namespace Il2CppTranslator
 {
@@ -24,6 +25,9 @@ namespace Il2CppTranslator
         public string TypeName { get; set; } = "";
         public string TypeNamespace { get; set; } = "";
 
+        private string ObfTypeName;
+        private string ObfFieldName;
+
         public void Translate(TypeInfo type)
         {
             FieldInfo field = GetField(type);
@@ -41,6 +45,7 @@ namespace Il2CppTranslator
 
             if (TranslateName)
             {
+                ObfFieldName = field.Name;
                 field.Name = Name;
             }
         }
@@ -50,6 +55,7 @@ namespace Il2CppTranslator
             if (!string.IsNullOrEmpty(TypeNamespace))
                 type.Namespace = TypeNamespace;
 
+            ObfTypeName = type.Name;
             type.Name = TypeName;
         }
 
@@ -67,5 +73,9 @@ namespace Il2CppTranslator
             }
             return null;
         }
+
+        internal KeyValuePair<string, string> GetFieldNameTranslation() => new KeyValuePair<string, string>(Name, ObfFieldName);
+        internal KeyValuePair<string, string> GetTypeNameTranslation() => new KeyValuePair<string, string>(TypeName, ObfTypeName);
+
     }
 }
