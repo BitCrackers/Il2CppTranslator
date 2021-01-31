@@ -7,56 +7,29 @@ namespace Il2CppTranslator.Util
 {
     public class Helpers
     {
-        private static bool init = false;
-        private static List<TypeInfo> _types;
-        private static List<FieldInfo> _fields;
-        private static List<MethodInfo> _methods;
-
-        public static void Initialize(TypeModel model, string assemblyName = "Assembly-CSharp.dll")
+        public static TypeInfo GetType(string name, Translator translator)
         {
-            _types = model.Types.Where(t => t.Assembly.ShortName == assemblyName).ToList();
-            _fields = _types.SelectMany(t => t.DeclaredFields).ToList();
-            _methods = _types.SelectMany(t => t.GetAllMethods()).ToList();
-            init = true;
+            return translator.Types.Where(t => t.FullName.Equals(name)).FirstOrDefault();
         }
 
-        public static TypeInfo GetType(string name)
+        public static FieldInfo GetField(string name, Translator translator)
         {
-            CheckInit(); return _types.Where(t => t.FullName.Equals(name)).FirstOrDefault();
+            return translator.Fields.Where(f => f.Name.Equals(name)).FirstOrDefault();
         }
 
-        public static FieldInfo GetField(string name)
+        public static IList<TypeInfo> GetTypeWithNumStaticFields(int count, Translator translator)
         {
-            CheckInit(); return _fields.Where(f => f.Name.Equals(name)).FirstOrDefault();
+            return translator.Types.Where(t => t.GetStaticFields().Count == count).ToList();
         }
 
-        public static MethodInfo GetMethod(string name)
+        public static IEnumerable<TypeInfo> FindTypesWithFieldSequence(List<string> sequence, Translator translator)
         {
-            CheckInit(); return _methods.Where(m => m.Name.Equals(name)).FirstOrDefault();
+            return translator.Types.Where(t => t.FieldSequenceEqual(sequence));
         }
 
-        public static IList<TypeInfo> GetTypeWithNumStaticFields(int count)
+        public static TypeInfo FindTypeWithStaticFieldSequence(List<string> sequence, Translator translator)
         {
-            return GetTypes().Where(t => t.GetStaticFields().Count == count).ToList();
-        }
-
-        public static TypeInfo FindTypeWithFieldSequence(List<string> sequence)
-        {
-            CheckInit(); return _types.Where(t => t.FieldSequenceEqual(sequence)).FirstOrDefault();
-        }
-
-        public static TypeInfo FindTypeWithStaticFieldSequence(List<string> sequence)
-        {
-            CheckInit(); return _types.Where(t => t.StaticFieldSequenceEqual(sequence)).FirstOrDefault();
-        }
-        internal static IList<TypeInfo> GetTypes()
-        {
-            CheckInit(); return _types;
-        }
-
-        internal static void CheckInit()
-        {
-            if (!init) throw new Exception("Call Initialized before calling any helper functions");
+            return translator.Types.Where(t => t.StaticFieldSequenceEqual(sequence)).FirstOrDefault();
         }
     }
 }

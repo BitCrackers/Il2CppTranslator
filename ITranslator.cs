@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Il2CppTranslator
 {
@@ -7,7 +8,7 @@ namespace Il2CppTranslator
         public string Name { get; }
         public TypeTranslator Type { get; }
         public List<System.Type> Dependencies { get; }
-        
+
         Translator Parent { get; }
         public void Initialize(Translator parent);
 

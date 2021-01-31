@@ -11,11 +11,23 @@ namespace Il2CppTranslator
     public class Translator
     {
         private IPlugin Plugin { get; }
-        private List<TypeTranslator> Translators = new List<TypeTranslator>();
-        public Translator(object plugin)
+        public List<Type> Translated;
+        public Il2CppInspector.Reflection.TypeModel Model;
+        public List<Il2CppInspector.Reflection.TypeInfo> Types;
+        public List<Il2CppInspector.Reflection.FieldInfo> Fields;
+
+        public List<(string, string)> Translations;
+
+        public Translator(object plugin, Il2CppInspector.Reflection.TypeModel model)
         {
-            if (!(plugin is IPlugin)) throw new ArgumentException("Argument must implement IPlugin");
+            Translations = new List<(string, string)>();
+            Translated = new List<Type>();
+
+            if (!(plugin is IPlugin)) throw new ArgumentException("Argument 0 must implement IPlugin");
             Plugin = (IPlugin)plugin;
+            Model = model;
+            Types = Model.Types.Where(t => t.Assembly.ShortName == "Assembly-CSharp.dll").ToList();
+            Fields = Types.SelectMany(t => t.DeclaredFields).ToList();
         }
         public void StartTranslating()
         {
@@ -24,34 +36,16 @@ namespace Il2CppTranslator
             foreach (var translator in LocateTranslators(Plugin.GetType().Assembly))
             {
                 services.StatusUpdate($"Translating {translator.Name}");
-                translator.Initialize(this);
-                translator.TranslateFields();
-                translator.TranslateMethods();
-                translator.TranslateDerivedTypes();
+                Il2CppInspector.Reflection.TypeInfo type = TypeTranslator.GetMatchingType(translator, this);
+                if (type == null) continue;
+                TypeTranslator.TranslateRecursively(translator, type, this);
             }
         }
 
-        public IDictionary<string, string> GetTranslations()
+        private IEnumerable<Type> LocateTranslators(Assembly assembly)
         {
-            IDictionary<string, string> translations = new Dictionary<string, string>();
-            foreach(TypeTranslator typeTranslator in Translators)
-            {
-                if (typeTranslator.GetNameTranslation().Value != null) translations.Add(typeTranslator.GetNameTranslation());
-                if (typeTranslator.GetNameSpaceTranslation().Value != null) translations.Add(typeTranslator.GetNameSpaceTranslation());
-                typeTranslator.GetFields().ForEach((fieldTranslator) => {
-                    if (fieldTranslator.GetFieldNameTranslation().Key != null || fieldTranslator.GetFieldNameTranslation().Value != null) translations.Add(fieldTranslator.GetFieldNameTranslation());
-                    if (fieldTranslator.GetTypeNameTranslation().Key != null || fieldTranslator.GetTypeNameTranslation().Value != null) translations.Add(fieldTranslator.GetTypeNameTranslation());
-                });
-            }
-            return translations;
+            var translators = assembly.GetTypes().Where(type => Attribute.IsDefined(type, typeof(TranslatorAttribute)));
+            return translators;
         }
-
-        private IEnumerable<ITranslator> LocateTranslators(Assembly assembly)
-        {
-            var translators = assembly.GetTypes().Where(t => typeof(ITranslator).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).Select(t => (ITranslator)Activator.CreateInstance(t));
-            return translators.TopologicalSort(t => t.GetType(), t => t.Dependencies);
-        }
-
-        internal void AddTranslator(TypeTranslator translator) => Translators.Add(translator);
     }
 }

@@ -70,16 +70,27 @@ namespace Il2CppTranslator.Util
             return typeInfo.DeclaredProperties.SelectMany(p => new[] { p.GetMethod, p.SetMethod }).Where(m => m != null).ToList();
         }
 
-        public static IList<TypeInfo> GetChildren(this TypeInfo typeInfo)
+        public static IList<TypeInfo> GetChildren(this TypeInfo typeInfo, Translator translator)
         {
-            Helpers.CheckInit();
-            return Helpers.GetTypes().Where(t => t.BaseType != null && t.BaseType == typeInfo).ToList();
+            return translator.Types.Where(t => t.BaseType != null && t.BaseType == typeInfo).ToList();
         }
 
-        public static IList<TypeInfo> GetInstances(this TypeInfo typeInfo)
+        public static IList<TypeInfo> GetInstances(this TypeInfo typeInfo, Translator translator)
         {
-            Helpers.CheckInit();
-            return Helpers.GetTypes().Where(t => t.ImplementedInterfaces != null && t.ImplementedInterfaces.Contains(typeInfo)).ToList();
+            return translator.Types.Where(t => t.ImplementedInterfaces != null && t.ImplementedInterfaces.Contains(typeInfo)).ToList();
+        }
+
+        public static List<string> GetFieldSequence(this Type type)
+        {
+            List<string> sequence = new List<string>();
+            foreach(System.Reflection.FieldInfo fieldInfo in type.GetFields())
+            {
+                if (fieldInfo.IsStatic || fieldInfo.IsLiteral) continue;
+
+                if (fieldInfo.FieldType.IsPrimitive) sequence.Add(fieldInfo.FieldType.Name);
+                else sequence.Add("*");
+            }
+            return sequence;
         }
     }
 }
