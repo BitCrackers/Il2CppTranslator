@@ -1,4 +1,4 @@
-# Il2CppTranslator [![](https://img.shields.io/github/v/release/OsOmE1/Il2CppTranslator)](https://github.com/OsOmE1/Il2CppTranslator/releases/latest)
+# Il2CppTranslator [![](https://img.shields.io/github/v/release/BitCrackers/Il2CppTranslator)](https://github.com/OsOmE1/Il2CppTranslator/releases/latest) [![Discord](https://img.shields.io/badge/Discord-Invite-7289DA.svg?logo=Discord&style=flat-square)](https://discord.gg/AUpXd3VUh8) [![Paypal](https://img.shields.io/badge/PayPal-Donate-Green.svg?logo=Paypal&style=flat-square)](https://www.paypal.com/donate/?hosted_button_id=TYMU92FD9D9UW)
 A C# Library to help make deobfuscation plugins for [Il2CppInspector](https://github.com/djkaty/Il2CppInspector)
 
 # Examples
