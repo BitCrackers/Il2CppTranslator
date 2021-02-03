@@ -2,30 +2,25 @@
 A C# Library to help make deobfuscation plugins for [Il2CppInspector](https://github.com/djkaty/Il2CppInspector)
 
 # Examples
-A translator class must always have the translator attribute and implement the ITranslator interface.
+A translator struct must always have the translator attribute.
 More information on how to structure your plugin can be found here https://github.com/OsOmE1/Il2CppTranslator/wiki/Structuring-your-plugin  
 ```CS
-class YourClass : ITranslator
+[Translator]
+public struct AmongUsClient
 {
-    public string Name = "YourClass"
-    public List<System.Type> Dependencies = new List<System.Type>();
-
-    TypeTranslator _type;
-    
-    public void Initialize()
-    {
-        _type = new TypeTranslator(Helpers.GetField("YourField").DeclaringType);
-    }
-
-    public void TranslateFields()
-    {
-        _type.AddField(new FieldTranslator() {{ Offset = 0x0, Static = true, Name = "CleanName", TranslateName = true);
-        Translator.TranslateFields();
-    }
-    
-    void TranslateMethods() { }
-
-    void TranslateDerivedTypes() { }
+    [TranslatorFieldOffset(0x0)] static public AmongUsClient Instance;
+    [TranslatorFieldOffset(0x70)] public int AutoOpenStore;
+    [TranslatorFieldOffset(0x74)] public object GameMode;
+    [TranslatorFieldOffset(0x78)] public object OnlineScene;
+    [TranslatorFieldOffset(0x7C)] public object MainMenuScene;
+    [TranslatorFieldOffset(0x80)] public GameData GameDataPrefab;
+    [TranslatorFieldOffset(0x84)] public PlayerControl PlayerPrefab;
+    [TranslatorFieldOffset(0x88)] public List<ShipStatus> ShipPrefabs;
+    [TranslatorFieldOffset(0x8C)] public int TutorialMapId;
+    [TranslatorFieldOffset(0x90)] public float SpawnRadius;
+    [TranslatorFieldOffset(0x94)] public object discoverState;
+    [TranslatorFieldOffset(0x98)] public List<object> DisconnectHandlers;
+    [TranslatorFieldOffset(0x9C)] public List<object> GameListHandlers;
 }
 ```
 
