@@ -29,15 +29,19 @@ namespace Il2CppTranslator
             Types = Model.Types.Where(t => t.Assembly.ShortName == "Assembly-CSharp.dll").ToList();
             Fields = Types.SelectMany(t => t.DeclaredFields).ToList();
         }
+
         public void StartTranslating()
         {
             PluginServices services = PluginServices.For(Plugin);
-
-            foreach (var translator in LocateTranslators(Plugin.GetType().Assembly))
+            var translators = LocateTranslators(Plugin.GetType().Assembly).ToList();
+            foreach (var translator in translators)
             {
                 services.StatusUpdate($"Translating {translator.Name}");
                 Il2CppInspector.Reflection.TypeInfo type = TypeTranslator.GetMatchingType(translator, this);
-                if (type == null) continue;
+                if (type == null)
+                {
+                    continue;
+                }
                 TypeTranslator.TranslateRecursively(translator, type, this);
             }
         }
@@ -45,7 +49,7 @@ namespace Il2CppTranslator
         private IEnumerable<Type> LocateTranslators(Assembly assembly)
         {
             var translators = assembly.GetTypes().Where(type => Attribute.IsDefined(type, typeof(TranslatorAttribute)));
-            return translators;
+            return translators.TopologicalSort(t => t.GetType(), t => t.GetDependecies());
         }
     }
 }

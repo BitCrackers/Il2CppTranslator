@@ -83,7 +83,7 @@ namespace Il2CppTranslator.Util
         public static List<string> GetFieldSequence(this Type type)
         {
             List<string> sequence = new List<string>();
-            foreach(System.Reflection.FieldInfo fieldInfo in type.GetFields())
+            foreach (System.Reflection.FieldInfo fieldInfo in type.GetDeclaredFields())
             {
                 if (fieldInfo.IsStatic || fieldInfo.IsLiteral) continue;
 
@@ -91,6 +91,14 @@ namespace Il2CppTranslator.Util
                 else sequence.Add("*");
             }
             return sequence;
+        }
+        public static List<Type> GetDependecies(this Type type)
+        {
+            return type.GetDeclaredFields().Select(f => f.FieldType).Where(t => t != type && Attribute.IsDefined(t, typeof(TranslatorAttribute))).ToList();
+        }
+        public static List<System.Reflection.FieldInfo> GetDeclaredFields(this Type type)
+        {
+            return type.GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public).ToList();
         }
     }
 }
